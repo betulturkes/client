@@ -1,12 +1,26 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import { registerAction, loginAction } from '../redux/actions/auth';
+import { useDispatch } from 'react-redux';
 
 const Auth = () => {
     const [signUp, setSignUp] = useState(true);
     const [authData, setAuthData] = useState({userName: "", password: "",email: ""});
+    const dispatch = useDispatch();
 
     const onChangeFunc = (e) =>{
         setAuthData({...authData, [e.target.name]: e.target.value})
     };
+
+
+    const authFunc = () => {
+        if(signUp){
+            dispatch(registerAction(authData));
+        }
+        else{
+            dispatch(loginAction(authData));
+        }
+    }
+
 
     console.log("authData", authData);
 
@@ -24,7 +38,7 @@ const Auth = () => {
                 <div className = "text-red-500 text-xs cursor-pointer mb-4">
                     {signUp ? <span onClick = {() => setSignUp(false)}>Daha önce giriş yaptınız mı?</span> : <span onClick = {() => setSignUp(true)}>Kayıt olmak için tıklayınız</span>}
                 </div>
-                <div className="cursor-pointer hover:bg-indigo-800 w-full p-2 text-center bg-indigo-600 text-white rounded-md">
+                <div onClick={authFunc} className="cursor-pointer hover:bg-indigo-800 w-full p-2 text-center bg-indigo-600 text-white rounded-md">
                     {signUp ? "Kayıt Ol" : "Giriş Yap"}
                 </div>
             </div>
